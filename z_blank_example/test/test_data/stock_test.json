@@ -1,0 +1,8 @@
+{
+    "analyst": "warren@buffett.com",
+    "name": "Hitachi",
+    "ticker_symbol": "HTHIY",
+    "prices": [
+        {"06/01/2005": 152.53},
+        {"06/01/2005": 153.53}]
+}

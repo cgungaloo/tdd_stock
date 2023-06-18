@@ -1,0 +1,13 @@
+curl --location 'http://127.0.0.1:5000/add-stock/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "analyst": "warren@buffett.com",
+    "name": "Hitachi",
+    "ticker_symbol": "MSFT",
+    "prices": [
+        {"06/01/2005": 152.53},
+        {"06/01/2005": 153.53}]
+}'
+
+
+FLASK_APP=app/app.py python3 -m flask run
