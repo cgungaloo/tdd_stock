@@ -24,7 +24,6 @@ class TestClass:
         response = self.client.get("/stock/all_stocks/")
 
         assert response.status_code == 200
-        stock_json = response.json
 
 
     def test_get_stock_by_ticker_integration(self):

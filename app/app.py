@@ -1,4 +1,5 @@
 from flask import Flask, Response, app, jsonify, request
+from app.components import get_all_stocks
 from app.models import Stock
 
 app = Flask(__name__)
@@ -17,10 +18,10 @@ app = Flask(__name__)
 # def get_stock_by_conversion(ticker_symbol,conversion):
 #     pass
 
-# @app.route("/stock/all_stocks/", methods=["GET"])
-# def get_all():
-#     stocks = get_all_stocks()
-#     return jsonify([vars(e) for e in stocks])
+@app.route("/stock/all_stocks/", methods=["GET"])
+def get_all():
+    stocks = get_all_stocks()
+    return jsonify([vars(e) for e in stocks])
 
 # @app.route("/add-stock/",methods=["POST"])
 # def add_stock_to_db():
