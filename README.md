@@ -46,6 +46,30 @@ When you click on the test tool bar you should be able to see the test tree.
 </p>
 
 
+# Code base
 
-# The code base
+App: the application directory where the flask application will be in
+
+- app.py: the main flask application with the routes
+- __init__.py : initialisation file for python.
+- components.py: file containing helper functions for app.py
+- models.py: contains the Stock class which defines the model for a stock
+
+db: database file for our application
+
+- stock_db.json: the database file containing stocks based off the Stock model.
+This file will act as our database for our application
+
+test: Directory for tests and tes resources
+
+- __init__.py : initialisation file for python.
+- test_data/stock_test.json: a test stock object that will be used in our tests
+- notes.txt: notes contianing curl commands for manual testing
+- test_int.py: integration tests will be written here
+- test_unit.py: unit tests will be written here
+
+
+
+
+
 
