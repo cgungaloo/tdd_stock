@@ -19,5 +19,5 @@ In this playground we are going to build a web application in python and Flask v
 We will write tests to describe the functionality of the components.
 
 <p align="center">
-<img width="668" alt="Screenshot 2023-05-23 at 10 06 27" src="https://github.com/DevOpsPlayground/DPG-Meetups-Next.js/assets/101208108/9db157cc-5d35-4171-8ebe-b741d77ec4d5">
+<img width="668" alt="Screenshot 2023-05-23 at 10 06 27" src="https://github.com/cgungaloo/tdd_stock/blob/master/readme_resources/Screenshot%202023-06-27%20at%2007.21.32.png">
 </p>
