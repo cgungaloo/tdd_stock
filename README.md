@@ -23,15 +23,19 @@ We will write tests to describe the functionality of the components.
 ### Opening the Next.js application in VS Code
 
 ### Step 1
+To get the environment prepared for the event you will need your meetup username.
 
-Go back to https://lab.devopsplayground.org/.
-
-If you need to, enter your name and surname again into the username box. 
-
-You should be presented with the following page: 
+You can find while logged in at [meetup.com](https://meetup.com) as in the example below
 
 <p align="center">
-<img width="544" alt="Screenshot 2023-05-23 at 11 33 12" src="https://github.com/DevOpsPlayground/DPG-Meetups-Next.js/assets/101208108/a8e6b536-6926-4ae6-a72a-5c19e7f4d207">
+<img width="544" alt="Screenshot 2023-05-23 at 11 33 12" src="./zz_assets/meetup.png">
+</p>
+
+Copy the username, in the above example it is `DevOps Playground`, and go to  [lab.devopsplayground.org](https://lab.devopsplayground.org/) and paste your username to the form like in the example below
+
+
+<p align="center">
+<img width="544" alt="Screenshot 2023-05-23 at 11 33 12" src="./zz_assets/lab.png">
 </p>
 
 ### Step 2
@@ -115,7 +119,7 @@ This test has not been fully implemented. So far it calls the get_all_stocks fun
 We know that the database file has 3 stock objects. As a simple assertion we can check that when we get all stocks the list should be a length of 3.
 Add this assertion to the test function
 
-```
+```python
 
     def test_get_all_stocks_returns_all(self):
         stocks = get_all_stocks()
@@ -132,7 +136,7 @@ If you run the test it will fail
 
 Unsuprisingly, this is because the test function has no visibility of get_all_stocks. Since a stub function is already present in components.py, lets import it at the top of the test file. You can put it underneath the Stock model import
 
-```
+```python
 
 from app.models import Stock
 from app.components import get_all_stocks
@@ -150,7 +154,7 @@ We have now reached the "red" stage of the red, green, refactor TDD flow. We can
 
 Go to app/components.py and see the get_all_stocks_function
 
-```
+```python
 def get_all_stocks():
 
     with open('project/tdd_stock/db/stock_db.json') as dbfile:
@@ -161,7 +165,7 @@ The function so far reads the db file and loads it into a json list using python
 Since the DB file is in the form of a json list, json.load will produce a list.
 Lets return the list
 
-```
+```python
 def get_all_stocks():
 
     with open('project/tdd_stock/db/stock_db.json') as dbfile:
@@ -182,7 +186,7 @@ Now that we have a passing test lets go into the "Refactor" stage of TDDs red, g
 
 Go to project/tdd_stock/test/test_unit.py
 
-```
+```python
     def test_get_all_stocks_returns_all(self):
         stocks = get_all_stocks()
         assert len(stocks) ==3
@@ -192,7 +196,7 @@ Go to project/tdd_stock/test/test_unit.py
 
  After rerunning the test you should get an error like:
 
-```
+```python
  Failed: [undefined]AttributeError: 'dict' object has no attribute 'analyst'
 ```
 This is because get_all_stocks so far only returns a list of pythin dicitionaries, not a list of Stocks. Lets refactor our function to support that.
@@ -200,7 +204,7 @@ This is because get_all_stocks so far only returns a list of pythin dicitionarie
 Go to project/tdd_stock/app/components.py. Update the function with a lambda expression that will iterate through the list of dictioanries and convert them
 to Stock objects
 
-```
+```python
 def get_all_stocks():
 
     with open('project/tdd_stock/db/stock_db.json') as dbfile:
@@ -219,7 +223,7 @@ We have implemented a function, now lets use it in our app.py and associate it w
 
 Go to app/app.py uncomment the function with the rout '@app.route("/stock/all_stocks/", methods=["GET"])'
 
-```
+```python
     @app.route("/stock/all_stocks/", methods=["GET"])
     def get_all():
         stocks = get_all_stocks()
@@ -236,7 +240,7 @@ Running this will give the same error as the unit test 'Failed: [undefined]NameE
 
 in app/app.py add the import
 
-```
+```python
 from app.components import get_all_stocks
 ```
 
@@ -246,7 +250,7 @@ In this test we are asserting that we get a 200 response code from the endpoint.
 
 in project/tdd_stock/test/test_int.py add to the test_get_all_stocks
 
-```
+```python
     def test_get_all_stocks(self):
         response = self.client.get("/stock/all_stocks/")
 
@@ -267,7 +271,7 @@ Go to project/tdd_stock/test/test_unit.py
 
 uncomment the function 'def test_get_stock_by_ticker_returns_correct_stock(self):'
 
-```
+```python
     def test_get_stock_by_ticker_returns_correct_stock(self):
         pass
 ```
@@ -275,7 +279,7 @@ uncomment the function 'def test_get_stock_by_ticker_returns_correct_stock(self)
 this function will return a single stock object when a ticker symbol is passed as a string.
 Lets implement the test to define how the application function will work.
 
-```
+```python
     def test_get_stock_by_ticker_returns_correct_stock(self):
         
         stock = get_stock_by_ticker('MSFT')
@@ -287,7 +291,7 @@ Lets implement the test to define how the application function will work.
 
 lets also import get_stock_by_ticker
 
-```
+```python
 from app.components import get_all_stocks, get_stock_by_ticker
 ```
 We have now defined a test that we can implement against.
@@ -296,7 +300,7 @@ If you run the test now, you will get: 'test_get_stock_by_ticker_returns_correct
 
 Lets make this test go green. In project/tdd_stock/app/components.py our function looks like:
 
-```
+```python
 def get_stock_by_ticker(ticker_symbol):
     with open('project/tdd_stock/db/stock_db.json') as dbfile:
         stocks_json = json.load(dbfile)
@@ -306,7 +310,7 @@ def get_stock_by_ticker(ticker_symbol):
 
 We need to read the stocks and find the one that matches the ticker symbol. We will use a filter function to find the stock we want
 
-```
+```python
 
 def get_stock_by_ticker(ticker_symbol):
     with open('project/tdd_stock/db/stock_db.json') as dbfile:
@@ -324,7 +328,7 @@ After rerunning the test, it will pass.
 
 You may notice that some of the code has been repeated from get_all_stocks. We can now do a refactor to make th function abit simpler by calling get_all_stocks
 
-```
+```python
 def get_stock_by_ticker(ticker_symbol):
     stocks_list_obj = get_all_stocks()
 
@@ -342,7 +346,7 @@ Lets now use get_stock_by_ticker in app/app.py
 
 uncomment the function with the route '@app.route("/stock/<ticker_symbol>/",methods=["GET"])'
 
-```
+```python
 @app.route("/stock/<ticker_symbol>/",methods=["GET"])
 def get_stock_by_ticker_symbol(ticker_symbol):
     
@@ -360,7 +364,7 @@ This test has been implemented, but if you run it, it will fail: 'test_get_stock
 Lets make the test pass by fixing the app function.
 The function fails because stock is undefined. In app/app.py you can see that get_stock_by_ticker is not being called. Lets call it.
 
-```
+```python
 @app.route("/stock/<ticker_symbol>/",methods=["GET"])
 def get_stock_by_ticker_symbol(ticker_symbol):
     
@@ -374,7 +378,7 @@ def get_stock_by_ticker_symbol(ticker_symbol):
 
 Make sure you import get_stock_by_ticker
 
-```
+```python
 from app.components import get_all_stocks, get_stock_by_ticker
 
 ```
@@ -388,7 +392,7 @@ What if a ticker_symbol we provide is not found in the DB? Lets write a test to 
 
 uncomment 'test_invalid_stock_not_found' in project/tdd_stock/test/test_unit.py
 
-```
+```python
     def test_invalid_stock_not_found(self):
         stock = get_stock_by_ticker("TSLA")
         assert stock == None
@@ -397,14 +401,14 @@ uncomment 'test_invalid_stock_not_found' in project/tdd_stock/test/test_unit.py
 This test checks that is we pass an invaldi ticker symbol we get None returned.
 This test when run, fails.
 
-```
+```python
 Failed: [undefined]IndexError: list index out of range
 self = <test.test_unit.StockTestClass testMethod=test_invalid_stock_not_found>
 ```
 
 Lets make this test green by fixing the function under test, get_stock_by_ticker
 
-```
+```python
 def get_stock_by_ticker(ticker_symbol):
     stocks_list_obj = get_all_stocks()
     
@@ -425,7 +429,7 @@ Go to test/test_unit.py
 
 uncomment test_save_stock_success
 
-```
+```python
     def test_save_stock_success(self):
 
     with open('project/tdd_stock/db/stock_db.json) as f:
@@ -438,7 +442,7 @@ We can know if save_stock works by shceking the state of the DB after upload. if
 
 Update the test
 
-```
+```python
     def test_save_stock_success(self):
 
         with open('project/tdd_stock/test/test_data/stock_test.json') as f:
@@ -453,13 +457,13 @@ Update the test
 
 and import save_stock
 
-```
+```python
 from app.components import get_all_stocks, get_stock_by_ticker, save_stock
 ```
 
 in project/tdd_stock/app/components.py uncomment save_stock
 
-```
+```python
 def save_stock(stock_to_save):
     with open('project/tdd_stock/db/stock_db.json','r') as json_db:
         stock_list = json.load(json_db)
@@ -481,7 +485,7 @@ We need to get all stocks and convert it to a list of stocks. We then take the i
 
 uncomment the code that does this
 
-```
+```python
 def save_stock(stock_to_save):
     with open('project/tdd_stock/db/stock_db.json','r') as json_db:
         stock_list = json.load(json_db)
@@ -499,7 +503,7 @@ def save_stock(stock_to_save):
 
 The test should now pass. We can now add a further assertion to check that the new stock is added.
 
-```
+```python
     def test_save_stock_success(self):
 
         with open('project/tdd_stock/test/test_data/stock_test.json') as f:
@@ -522,7 +526,7 @@ Lets now use this function in a route.
 
 Go to project/tdd_stock/test/test_int.py. Uncomment test_add_stock_integration
 
-```
+```python
     def test_add_stock_integration(self):
 
         with open('test/test_data/stock_test.json') as f:
@@ -534,7 +538,7 @@ Go to project/tdd_stock/test/test_int.py. Uncomment test_add_stock_integration
 At a route level we want to check that the function returns a 200 response when we call the endpoint.
 Uncomment @app.route("/add-stock/",methods=["POST"]) in app/app.py
 
-```
+```python
 @app.route("/add-stock/",methods=["POST"])
 def add_stock_to_db():
     # try catch for error
@@ -548,7 +552,7 @@ def add_stock_to_db():
 
 Import the function too
 
-```
+```python
 from app.components import get_all_stocks, get_stock_by_ticker, save_stock
 
 ```
