@@ -260,3 +260,32 @@ If you want you can add some more assertions too.
 We have now implemented a function and a route via TDD!
 
 ### Step 5
+
+Lets implement the next function, get_stock_by_ticker.
+
+Go to project/tdd_stock/test/test_unit.py
+
+uncomment the function 'def test_get_stock_by_ticker_returns_correct_stock(self):'
+
+```
+    def test_get_stock_by_ticker_returns_correct_stock(self):
+        pass
+```
+
+this function will return a single stock object when a ticker symbol is passed as a string.
+Lets implement the test to define how the application function will work.
+
+```
+    def test_get_stock_by_ticker_returns_correct_stock(self):
+        
+        stock = get_stock_by_ticker('MSFT')
+
+        assert stock.ticker == 'MSFT'
+        assert stock.name == 'Microsoft'
+```
+
+lets also import get_stock_by_ticker
+
+```
+from app.components import get_all_stocks, get_stock_by_ticker
+```
