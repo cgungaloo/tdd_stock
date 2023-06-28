@@ -6,7 +6,7 @@ from app.models import Stock
 
 def get_all_stocks():
 
-    with open('db/stock_db.json') as dbfile:
+    with open('project/tdd_stock/db/stock_db.json') as dbfile:
         stocks_json = json.load(dbfile)
 
 

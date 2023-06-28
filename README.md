@@ -138,10 +138,43 @@ from app.models import Stock
 from app.components import get_all_stocks
 
 ```
+If you rerun the test you now get this error:
 
+<p align="center">
+<img width="668" alt="Screenshot 2023-05-23 at 10 06 27" src="https://github.com/cgungaloo/tdd_stock/blob/master/readme_resources/get_all_stocks_len_error.png">
+</p>
 
+We have now reached the "red" stage of the red, green, refactor TDD flow. We can fix this error by now implementing some application code to make the test pass.
 
+### Step 2
 
+Go to app/components.py and see the get_all_stocks_function
+
+```
+def get_all_stocks():
+
+    with open('project/tdd_stock/db/stock_db.json') as dbfile:
+        stocks_json = json.load(dbfile)
+```
+
+The function so far reads the db file and loads it into a json list using pythons json library.
+Since the DB file is in the form of a json list, json.load will produce a list.
+Lets return the list
+
+```
+def get_all_stocks():
+
+    with open('project/tdd_stock/db/stock_db.json') as dbfile:
+        stocks_json = json.load(dbfile)
+
+    return stocks_json
+```
+
+The test will now pass, the "Green" stage in TDD.
+
+<p align="center">
+<img width="668" alt="Screenshot 2023-05-23 at 10 06 27" src="https://github.com/cgungaloo/tdd_stock/blob/master/readme_resources/get_all_stocks_test_pass_initial.png">
+</p>
 
 
 
