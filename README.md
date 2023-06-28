@@ -280,8 +280,9 @@ Lets implement the test to define how the application function will work.
         
         stock = get_stock_by_ticker('MSFT')
 
-        assert stock.ticker == 'MSFT'
+        assert stock.ticker_symbol == 'MSFT'
         assert stock.name == 'Microsoft'
+
 ```
 
 lets also import get_stock_by_ticker
@@ -289,3 +290,94 @@ lets also import get_stock_by_ticker
 ```
 from app.components import get_all_stocks, get_stock_by_ticker
 ```
+We have now defined a test that we can implement against.
+
+If you run the test now, you will get: 'test_get_stock_by_ticker_returns_correct_stock Failed: [undefined]AttributeError: 'NoneType' object has no attribute 'ticker''
+
+Lets make this test go green. In project/tdd_stock/app/components.py our function looks like:
+
+```
+def get_stock_by_ticker(ticker_symbol):
+    with open('project/tdd_stock/db/stock_db.json') as dbfile:
+        stocks_json = json.load(dbfile)
+        
+    pass
+```
+
+We need to read the stocks and find the one that matches the ticker symbol. We will use a filter function to find the stock we want
+
+```
+
+def get_stock_by_ticker(ticker_symbol):
+    with open('project/tdd_stock/db/stock_db.json') as dbfile:
+        stocks_json = json.load(dbfile)
+
+    stocks_list_obj = list(map(lambda x: Stock(**x), stocks_json))
+
+    stock_list_match = list(filter(lambda x:x.ticker_symbol == ticker_symbol, stocks_list_obj))
+
+    return stock_list_match[0]
+
+```
+
+After rerunning the test, it will pass.
+
+You may notice that some of the code has been repeated from get_all_stocks. We can now do a refactor to make th function abit simpler by calling get_all_stocks
+
+```
+def get_stock_by_ticker(ticker_symbol):
+    stocks_list_obj = get_all_stocks()
+
+    stock_list_match = list(filter(lambda x:x.ticker_symbol == ticker_symbol, stocks_list_obj))
+
+    return stock_list_match[0]
+```
+
+We have reduced the code by using the get_all_stocks function implemented earlier.
+If you re run all the tests that we have written so far, they should all still pass.
+
+### Step 6
+
+Lets now use get_stock_by_ticker in app/app.py
+
+uncomment the function with the route '@app.route("/stock/<ticker_symbol>/",methods=["GET"])'
+
+```
+@app.route("/stock/<ticker_symbol>/",methods=["GET"])
+def get_stock_by_ticker_symbol(ticker_symbol):
+    
+    # if stock:
+    return jsonify(stock.__dict__)
+    # else:
+    #     return jsonify(None)
+
+```
+
+in project/tdd_stock/test/test_int.py uncomment 'test_get_stock_by_ticker_integration'
+
+This test has been implemented, but if you run it, it will fail: 'test_get_stock_by_ticker_integration Failed: [undefined]NameError: name 'stock' is not defined'
+
+Lets make the test pass by fixing the app function.
+The function fails because stock is undefined. In app/app.py you can see that get_stock_by_ticker is not being called. Lets call it.
+
+```
+@app.route("/stock/<ticker_symbol>/",methods=["GET"])
+def get_stock_by_ticker_symbol(ticker_symbol):
+    
+    stock = get_stock_by_ticker(ticker_symbol)
+    # if stock:
+    return jsonify(stock.__dict__)
+    # else:
+    #     return jsonify(None)
+
+```
+
+Make sure you import get_stock_by_ticker
+
+```
+from app.components import get_all_stocks, get_stock_by_ticker
+
+```
+
+The commented if statment will be used later in other functionality.
+The tests will now pass.

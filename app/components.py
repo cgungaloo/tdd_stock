@@ -12,12 +12,10 @@ def get_all_stocks():
 
 
 def get_stock_by_ticker(ticker_symbol):
-    stock_list_obj = get_all_stocks()
-    # try:
-    # use list, filter to get stock
-    # except Exception as e:
-    #     return None
-    pass
+    with open('project/tdd_stock/db/stock_db.json') as dbfile:
+        stocks_json = json.load(dbfile)
+
+    
 
 # def save_stock(stock_to_save):
         #     with open('db/stock_db.json','r') as json_db:
