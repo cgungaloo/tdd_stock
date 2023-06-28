@@ -9,9 +9,6 @@ def get_all_stocks():
     with open('db/stock_db.json') as dbfile:
         stocks_json = json.load(dbfile)
 
-    stock_list = list(map(lambda x: Stock(**x),stocks_json))
-    
-    return stock_list
 
 
 def get_stock_by_ticker(ticker_symbol):

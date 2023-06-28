@@ -4,12 +4,15 @@ import requests
 import json
 
 from app.models import Stock
+# from app.components import get_all_stocks
 
 
 class StockTestClass(TestCase):
 
     def test_get_all_stocks_returns_all(self):
         stocks = get_all_stocks()
+
+        assert len(stocks) == 3
 
 
     # def test_get_stock_by_ticker_returns_correct_stock(self):
