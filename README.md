@@ -23,15 +23,19 @@ We will write tests to describe the functionality of the components.
 ### Opening the Next.js application in VS Code
 
 ### Step 1
+To get the environment prepared for the event you will need your meetup username.
 
-Go back to https://lab.devopsplayground.org/.
-
-If you need to, enter your name and surname again into the username box. 
-
-You should be presented with the following page: 
+You can find while logged in at [meetup.com](https://meetup.com) as in the example below
 
 <p align="center">
-<img width="544" alt="Screenshot 2023-05-23 at 11 33 12" src="https://github.com/DevOpsPlayground/DPG-Meetups-Next.js/assets/101208108/a8e6b536-6926-4ae6-a72a-5c19e7f4d207">
+<img width="544" alt="Screenshot 2023-05-23 at 11 33 12" src="./zz_assets/meetup.png">
+</p>
+
+Copy the username, in the above example it is `DevOps Playground`, and go to  [lab.devopsplayground.org](https://lab.devopsplayground.org/) and paste your username to the form like in the example below
+
+
+<p align="center">
+<img width="544" alt="Screenshot 2023-05-23 at 11 33 12" src="./zz_assets/lab.png">
 </p>
 
 ### Step 2
