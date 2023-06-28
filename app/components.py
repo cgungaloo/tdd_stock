@@ -39,17 +39,17 @@ def get_stock_by_ticker(ticker_symbol):
 
     
 
-def get_stock_with_conversion(ticker_symbol,conversion):
+# def get_stock_with_conversion(ticker_symbol,conversion):
 
-    response = requests.get("https://open.er-api.com/v6/latest/USD")
-    response = response.json()
-    rates = response['rates']
-    exchange_rate =rates[conversion]
+#     response = requests.get("https://open.er-api.com/v6/latest/USD")
+#     response = response.json()
+#     rates = response['rates']
+#     exchange_rate =rates[conversion]
 
-    stock = get_stock_by_ticker(ticker_symbol)
+#     stock = get_stock_by_ticker(ticker_symbol)
 
-    converted_prices = list(map(lambda x:x["value"]* exchange_rate,stock.prices))
-    stock.prices = converted_prices
+#     converted_prices = list(map(lambda x:x["value"]* exchange_rate,stock.prices))
+#     stock.prices = converted_prices
     
 
 

@@ -176,5 +176,87 @@ The test will now pass, the "Green" stage in TDD.
 <img width="668" alt="Screenshot 2023-05-23 at 10 06 27" src="https://github.com/cgungaloo/tdd_stock/blob/master/readme_resources/get_all_stocks_test_pass_initial.png">
 </p>
 
+### Step 3
 
+Now that we have a passing test lets go into the "Refactor" stage of TDDs red, green, refactor. Part of the requirement for this component is that a list of stock objects is returned. Our test so far only checks the length of the list. Lets add an assertion to prove that we ge back a list of stocks.
 
+Go to project/tdd_stock/test/test_unit.py
+
+```
+    def test_get_all_stocks_returns_all(self):
+        stocks = get_all_stocks()
+        assert len(stocks) ==3
+        assert stocks[0].analyst == 'warren.buffet'
+```
+ By invoking the analyst variable we are proving that the first element in the list is a Stock object that has the attribute 'analyst'
+
+ After rerunning the test you should get an error like:
+
+```
+ Failed: [undefined]AttributeError: 'dict' object has no attribute 'analyst'
+```
+This is because get_all_stocks so far only returns a list of pythin dicitionaries, not a list of Stocks. Lets refactor our function to support that.
+
+Go to project/tdd_stock/app/components.py. Update the function with a lambda expression that will iterate through the list of dictioanries and convert them
+to Stock objects
+
+```
+def get_all_stocks():
+
+    with open('project/tdd_stock/db/stock_db.json') as dbfile:
+        stocks_json = json.load(dbfile)
+
+    stocks_list_obj = list(map(lambda x: Stock(**x), stocks_json))
+
+    return stocks_list_obj
+```
+
+The test will now pass once rerun.
+
+### Step 4
+
+We have implemented a function, now lets use it in our app.py and associate it with a route. We want the route to return our json dictionary.
+
+Go to app/app.py uncomment the function with the rout '@app.route("/stock/all_stocks/", methods=["GET"])'
+
+```
+    @app.route("/stock/all_stocks/", methods=["GET"])
+    def get_all():
+        stocks = get_all_stocks()
+        return jsonify([vars(e) for e in stocks])
+```
+
+We can run this integration test by going to the test tree
+
+<p align="center">
+<img width="668" alt="Screenshot 2023-05-23 at 10 06 27" src="https://github.com/cgungaloo/tdd_stock/blob/master/readme_resources/get_all_stock_integration_tree.png">
+</p>
+
+Running this will give the same error as the unit test 'Failed: [undefined]NameError: name 'get_all_stocks' is not defined' we can fix this by doing an import in
+
+in app/app.py add the import
+
+```
+from app.components import get_all_stocks
+```
+
+The test will now pass.
+
+In this test we are asserting that we get a 200 response code from the endpoint. We can add a another assertion by checking the length of the response.
+
+in project/tdd_stock/test/test_int.py add to the test_get_all_stocks
+
+```
+    def test_get_all_stocks(self):
+        response = self.client.get("/stock/all_stocks/")
+
+        assert response.status_code == 200
+        stock_json = response.json
+        assert len(stock_json) == 3
+```
+
+If you want you can add some more assertions too.
+
+We have now implemented a function and a route via TDD!
+
+### Step 5
