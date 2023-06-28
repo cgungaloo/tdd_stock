@@ -379,5 +379,44 @@ from app.components import get_all_stocks, get_stock_by_ticker
 
 ```
 
-The commented if statment will be used later in other functionality.
+The commented if statement will be used later in other functionality.
 The tests will now pass.
+
+### Step 7
+
+What if a ticker_symbol we provide is not found in the DB? Lets write a test to describe what the expected behaviour should be
+
+uncomment 'test_invalid_stock_not_found' in project/tdd_stock/test/test_unit.py
+
+```
+    def test_invalid_stock_not_found(self):
+        stock = get_stock_by_ticker("TSLA")
+        assert stock == None
+```
+
+This test checks that is we pass an invaldi ticker symbol we get None returned.
+This test when run, fails.
+
+```
+Failed: [undefined]IndexError: list index out of range
+self = <test.test_unit.StockTestClass testMethod=test_invalid_stock_not_found>
+```
+
+Lets make this test green by fixing the function under test, get_stock_by_ticker
+
+```
+def get_stock_by_ticker(ticker_symbol):
+    stocks_list_obj = get_all_stocks()
+    
+    stock_list_match = list(filter(lambda x:x.ticker_symbol == ticker_symbol, stocks_list_obj))
+
+    if len(stock_list_match) ==0:
+        return None
+    return stock_list_match[0]
+```
+
+The test now passes
+
+### Step 8
+
+The next requirement is to add a stock to the DB. Lets think about how to test that.
