@@ -18,11 +18,18 @@ def get_stock_by_ticker(ticker_symbol):
     
 
 # def save_stock(stock_to_save):
-        #     with open('db/stock_db.json','r') as json_db:
-#         stock_list = json.load(json_db)
+#     # with open('project/tdd_stock/db/stock_db.json','r') as json_db:
+#     #     stock_list = json.load(json_db)
 #     # stock_list_obj = list(map(lambda x:Stock(**x), stock_list))
-#     # stock_obj = Stock(**stock_to_save)
-#     # stock_list_obj.append(stock_obj)
+
+#     stock_obj = Stock(**stock_to_save)
+#     stock_list_obj.append(stock_obj)
+
+#     stock_list_json = list(map(lambda x: vars(x), stock_list_obj))
+#     with open('project/tdd_stock/db/stock_db.json','w') as json_db:
+#         json.dump(stock_list_json,json_db,sort_keys=True, indent=4, separators=(',', ': '))
+#     # else:
+#     #     raise Exception(f"{stock_obj.ticker_symbol} already exists")
 
 #     stock_list_json = list(map(lambda x: vars(x), stock_list_obj))
 #     with open('db/stock_db.json','w') as json_db:
@@ -30,10 +37,10 @@ def get_stock_by_ticker(ticker_symbol):
 #     # else:
 #     #     raise Exception(f"{stock_obj.ticker_symbol} already exists")
             
-# def load_db():
-#     with open('db/stock_db.json','r') as json_db:
-#         stock_list = json.load(json_db)
-#     return stock_list
+def load_db():
+    with open('db/stock_db.json','r') as json_db:
+        stock_list = json.load(json_db)
+    return stock_list
 
     
 

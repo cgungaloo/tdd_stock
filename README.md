@@ -420,3 +420,135 @@ The test now passes
 ### Step 8
 
 The next requirement is to add a stock to the DB. Lets think about how to test that.
+
+Go to test/test_unit.py
+
+uncomment test_save_stock_success
+
+```
+    def test_save_stock_success(self):
+
+    with open('project/tdd_stock/db/stock_db.json) as f:
+        stock_data = json.load(f)
+```
+
+You'll notice that there is a reference to 'project/tdd_stock/db/stock_db.json' this is a test file which contains a stock object. We will use this to update the db.
+
+We can know if save_stock works by shceking the state of the DB after upload. if we call get_all_stocks after save_stock, we expect the lentgh of the DB to now be 4.
+
+Update the test
+
+```
+    def test_save_stock_success(self):
+
+        with open('project/tdd_stock/test/test_data/stock_test.json') as f:
+            stock_data = json.load(f)
+
+        save_stock(stock_data)
+
+        stocks = get_all_stocks()
+
+        assert len(stocks) == 4
+```
+
+and import save_stock
+
+```
+from app.components import get_all_stocks, get_stock_by_ticker, save_stock
+```
+
+in project/tdd_stock/app/components.py uncomment save_stock
+
+```
+def save_stock(stock_to_save):
+    with open('project/tdd_stock/db/stock_db.json','r') as json_db:
+        stock_list = json.load(json_db)
+    # stock_list_obj = list(map(lambda x:Stock(**x), stock_list))
+    # stock_obj = Stock(**stock_to_save)
+    # stock_list_obj.append(stock_obj)
+
+    stock_list_json = list(map(lambda x: vars(x), stock_list_obj))
+    with open('db/stock_db.json','w') as json_db:
+        json.dump(stock_list_json,json_db,sort_keys=True, indent=4, separators=(',', ': '))
+    # else:
+    #     raise Exception(f"{stock_obj.ticker_symbol} already exists")
+```
+
+Running the test gives this error: 'test_save_stock_success Failed: [undefined]TypeError: app.models.Stock() argument after ** must be a mapping, not list'
+
+We are now at Red stage in Red, Green, Refactor. Lets pass the test.
+We need to get all stocks and convert it to a list of stocks. We then take the incoming stock and add it to the list. We then rewrite the updated list to the DB
+
+uncomment the code that does this
+
+```
+def save_stock(stock_to_save):
+    with open('project/tdd_stock/db/stock_db.json','r') as json_db:
+        stock_list = json.load(json_db)
+    stock_list_obj = list(map(lambda x:Stock(**x), stock_list))
+
+    stock_obj = Stock(**stock_to_save)
+    stock_list_obj.append(stock_obj)
+
+    stock_list_json = list(map(lambda x: vars(x), stock_list_obj))
+    with open('project/tdd_stock/db/stock_db.json','w') as json_db:
+        json.dump(stock_list_json,json_db,sort_keys=True, indent=4, separators=(',', ': '))
+    # else:
+    #     raise Exception(f"{stock_obj.ticker_symbol} already exists")
+```
+
+The test should now pass. We can now add a further assertion to check that the new stock is added.
+
+```
+    def test_save_stock_success(self):
+
+        with open('project/tdd_stock/test/test_data/stock_test.json') as f:
+            stock_data = json.load(f)
+
+        save_stock(stock_data)
+
+        stocks = get_all_stocks()
+
+        assert len(stocks) == 4
+        assert stocks[3].ticker_symbol == 'HTHIY'
+```
+
+This proves that the last entry in the DB was stock from the test data.
+If you go to the DB file, you'll notice that you can't see the new stock in the file. This is because the unit test has a teadDown function that automatically removes the entry after the test. This allows you to run the test repeatedly without it growing the DB. This will become important when we implement a duplication check later
+
+### Step 9
+
+Lets now use this function in a route.
+
+Go to project/tdd_stock/test/test_int.py. Uncomment test_add_stock_integration
+
+```
+    def test_add_stock_integration(self):
+
+        with open('test/test_data/stock_test.json') as f:
+            stock_data = json.load(f)
+
+        data_json = json.dumps(stock_data)
+```
+
+At a route level we want to check that the function returns a 200 response when we call the endpoint.
+Uncomment @app.route("/add-stock/",methods=["POST"]) in app/app.py
+
+```
+@app.route("/add-stock/",methods=["POST"])
+def add_stock_to_db():
+    # try catch for error
+    # try:
+    save_stock(request.json)
+    resp = jsonify(success=True)
+    return resp
+    # except Exception as e:
+    #     return Response(f'{str(e)}',status=400)
+```
+
+Import the function too
+
+```
+from app.components import get_all_stocks, get_stock_by_ticker, save_stock
+
+```

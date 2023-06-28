@@ -24,7 +24,7 @@ class StockTestClass(TestCase):
 
     # def test_save_stock_success(self):
 
-    #     with open('test/test_data/stock_test.json') as f:
+    #     with open('project/tdd_stock/test/test_data/stock_test.json') as f:
     #         stock_data = json.load(f)
 
 

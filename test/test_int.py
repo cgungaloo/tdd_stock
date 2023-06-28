@@ -40,8 +40,8 @@ class TestClass:
 
     # def test_add_stock_integration(self):
 
-    #     with open('test/test_data/stock_test.json') as f:
-    #         stock_data = json.load(f)
+    # with open('project/tdd_stock/test/test_data/stock_test.json') as f:
+    #     stock_data = json.load(f)
 
     #     data_json = json.dumps(stock_data)
 
